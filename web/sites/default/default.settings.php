@@ -768,3 +768,16 @@ $settings['entity_update_batch_size'] = 50;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
+
+/**
+ * Redis Configuration.
+ * https://chromatichq.com/blog/configuring-redis-caching-drupal-8
+ */
+$conf['chq_redis_cache_enabled'] = TRUE;
+if (isset($conf['chq_redis_cache_enabled']) && $conf['chq_redis_cache_enabled']) {
+  $settings['redis.connection']['interface'] = 'PhpRedis';
+  $settings['cache']['default'] = 'cache.backend.redis';
+  // Note that unlike memcached, redis persists cache items to disk so we can
+  // actually store cache_class_cache_form in the default cache.
+  $conf['cache_class_cache'] = 'Redis_Cache';
+}
